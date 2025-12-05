@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\File;
 use League\CommonMark\CommonMarkConverter;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('demo');
 });
 
 Route::get('/api-docs', function () {
@@ -17,8 +17,4 @@ Route::get('/api-docs', function () {
     $html = $converter->convert($markdown);
 
     return view('api-docs', ['content' => $html]);
-});
-
-Route::get('/demo', function () {
-    return view('demo');
 });
