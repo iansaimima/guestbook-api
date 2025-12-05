@@ -6,8 +6,8 @@
 const GuestbookAPI = {
     // Configuration
     config: {
-        baseURL: 'http://localhost:8000/api',
-        apiKey: 'your-secret-api-key-here'
+        baseURL: 'https://api.gb.gutsylab.com/api',
+        apiKey: 'ly1VskisCUDJyFeIIls9ndseQPDfVslk'
     },
 
     /**
