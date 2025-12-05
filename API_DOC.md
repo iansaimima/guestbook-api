@@ -219,24 +219,130 @@ https://api.gb.gutsylab.com
    ```
 3. Ganti dengan API key yang aman
 
+## Testing dengan Postman
+
+### Setup Postman
+
+1. **Import Collection**
+   
+   **Cara 1: Import dari URL (Recommended)**
+   - Buka Postman
+   - Klik **Import** di kiri atas
+   - Pilih tab **Link**
+   - Paste URL: `https://api.gb.gutsylab.com/api.postman.json`
+   - Klik **Continue** → **Import**
+   
+   **Cara 2: Download & Import File**
+   - Download file dari: `https://api.gb.gutsylab.com/api.postman.json`
+   - Klik kanan → Save As → Simpan sebagai `guestbook-api.postman_collection.json`
+   - Buka Postman → klik **Import**
+   - Drag & drop file atau klik **Choose Files**
+   - Pilih file yang sudah didownload → **Import**
+   
+   Collection sudah include semua endpoint dengan test scripts otomatis
+
+2. **Setup Environment Variables**
+   - Klik **Environments** di sidebar kiri
+   - Klik **+** untuk create new environment
+   - Tambahkan variables:
+     - `base_url` = `https://api.gb.gutsylab.com/api`
+     - `api_key` = `ly1VskisCUDJyFeIIls9ndseQPDfVslk`
+   - Save dan aktifkan environment
+
+3. **Setup Headers (untuk manual request)**
+   
+   Setiap request harus include headers berikut:
+   - **X-API-KEY**: `ly1VskisCUDJyFeIIls9ndseQPDfVslk`
+   - **Accept**: `application/json`
+   - **Content-Type**: `application/json` (untuk POST/PUT)
+
+### Manual Request Examples
+
+#### 1. Get All Guestbooks
+- Method: `GET`
+- URL: `{{base_url}}/guestbooks`
+- Headers:
+  - `X-API-KEY`: `{{api_key}}`
+  - `Accept`: `application/json`
+
+#### 2. Get Guestbook by ID
+- Method: `GET`
+- URL: `{{base_url}}/guestbooks/1`
+- Headers:
+  - `X-API-KEY`: `{{api_key}}`
+  - `Accept`: `application/json`
+
+#### 3. Create Guestbook
+- Method: `POST`
+- URL: `{{base_url}}/guestbooks`
+- Headers:
+  - `X-API-KEY`: `{{api_key}}`
+  - `Accept`: `application/json`
+  - `Content-Type`: `application/json`
+- Body (raw JSON):
+```json
+{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "phone": "081234567890",
+    "organization": "ABC Company",
+    "purpose": "Business Meeting",
+    "message": "Thank you",
+    "visit_date": "2025-12-05"
+}
+```
+
+#### 4. Update Guestbook
+- Method: `PUT`
+- URL: `{{base_url}}/guestbooks/1`
+- Headers:
+  - `X-API-KEY`: `{{api_key}}`
+  - `Accept`: `application/json`
+  - `Content-Type`: `application/json`
+- Body (raw JSON):
+```json
+{
+    "name": "John Doe Updated",
+    "email": "john.updated@example.com"
+}
+```
+
+#### 5. Delete Guestbook
+- Method: `DELETE`
+- URL: `{{base_url}}/guestbooks/1`
+- Headers:
+  - `X-API-KEY`: `{{api_key}}`
+  - `Accept`: `application/json`
+
+### Postman Tips
+
+- **Save Requests**: Simpan request yang sering digunakan ke dalam collection
+- **Use Variables**: Gunakan `{{base_url}}` dan `{{api_key}}` untuk memudahkan switching environment
+- **Tests Tab**: Tambahkan test scripts untuk automated testing
+- **Pre-request Scripts**: Gunakan untuk generate dynamic data
+- **Console**: Buka console (View → Show Postman Console) untuk debug
+
 ## Testing dengan cURL
 
 ### Get All
 ```bash
-curl -X GET http://localhost:8000/api/guestbooks \
-  -H "X-API-KEY: your-secret-api-key-here"
+curl -X GET https://api.gb.gutsylab.com/api/guestbooks \
+  -H "X-API-KEY: ly1VskisCUDJyFeIIls9ndseQPDfVslk" \
+  -H "Accept: application/json"
 ```
 
 ### Get Detail
 ```bash
-curl -X GET http://localhost:8000/api/guestbooks/1 \
-  -H "X-API-KEY: your-secret-api-key-here"
+curl -X GET https://api.gb.gutsylab.com/api/guestbooks/1 \
+  -H "X-API-KEY: ly1VskisCUDJyFeIIls9ndseQPDfVslk" \
+  -H "Accept: application/json"
 ```
 
 ### Create
 ```bash
-curl -X POST http://localhost:8000/api/guestbooks \
-  -H "X-API-KEY: your-secret-api-key-here" \
+curl -X POST https://api.gb.gutsylab.com/api/guestbooks \
+  -H "X-API-KEY: ly1VskisCUDJyFeIIls9ndseQPDfVslk" \
+  -H "Accept: application/json" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "John Doe",
@@ -251,8 +357,9 @@ curl -X POST http://localhost:8000/api/guestbooks \
 
 ### Update
 ```bash
-curl -X PUT http://localhost:8000/api/guestbooks/1 \
-  -H "X-API-KEY: your-secret-api-key-here" \
+curl -X PUT https://api.gb.gutsylab.com/api/guestbooks/1 \
+  -H "X-API-KEY: ly1VskisCUDJyFeIIls9ndseQPDfVslk" \
+  -H "Accept: application/json" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "John Doe Updated"
@@ -261,6 +368,7 @@ curl -X PUT http://localhost:8000/api/guestbooks/1 \
 
 ### Delete
 ```bash
-curl -X DELETE http://localhost:8000/api/guestbooks/1 \
-  -H "X-API-KEY: your-secret-api-key-here"
+curl -X DELETE https://api.gb.gutsylab.com/api/guestbooks/1 \
+  -H "X-API-KEY: ly1VskisCUDJyFeIIls9ndseQPDfVslk" \
+  -H "Accept: application/json"
 ```
