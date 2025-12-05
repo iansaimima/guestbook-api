@@ -1,0 +1,523 @@
+{
+	"info": {
+		"_postman_id": "guestbook-api-collection",
+		"name": "Guestbook API",
+		"description": "Complete API collection for Guestbook CRUD operations with API Key authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "api_key",
+			"value": "your-secret-api-key-here",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Get All Guestbooks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has success field\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"});",
+							"",
+							"pm.test(\"Response has data array\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.be.an('array');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "{{api_key}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/guestbooks",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"guestbooks"
+					]
+				},
+				"description": "Retrieve all guestbook entries ordered by creation date (newest first)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Guestbook by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response contains guestbook data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.have.property('id');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "{{api_key}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/guestbooks/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"guestbooks",
+						"1"
+					]
+				},
+				"description": "Retrieve a specific guestbook entry by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Guestbook",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Guestbook created successfully\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData.data).to.have.property('id');",
+							"});",
+							"",
+							"// Save created ID for other requests",
+							"var jsonData = pm.response.json();",
+							"if (jsonData.data && jsonData.data.id) {",
+							"    pm.collectionVariables.set(\"created_id\", jsonData.data.id);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "{{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"phone\": \"081234567890\",\n    \"organization\": \"ABC Company\",\n    \"purpose\": \"Business Meeting\",\n    \"message\": \"Thank you for the meeting\",\n    \"visit_date\": \"2025-12-05\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/guestbooks",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"guestbooks"
+					]
+				},
+				"description": "Create a new guestbook entry with required fields: name, email, purpose, and visit_date"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Guestbook",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Guestbook updated successfully\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData.message).to.include('updated');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "{{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"John Doe Updated\",\n    \"email\": \"john.updated@example.com\",\n    \"phone\": \"081234567891\",\n    \"organization\": \"XYZ Company\",\n    \"purpose\": \"Follow-up Meeting\",\n    \"message\": \"Updated message\",\n    \"visit_date\": \"2025-12-06\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/guestbooks/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"guestbooks",
+						"1"
+					]
+				},
+				"description": "Update an existing guestbook entry. All fields are optional - only send fields you want to update"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Guestbook (Partial)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Partial update successful\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "{{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Jane Doe\",\n    \"message\": \"Only updating name and message\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/guestbooks/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"guestbooks",
+						"1"
+					]
+				},
+				"description": "Example of partial update - only updating specific fields"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Guestbook",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Guestbook deleted successfully\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData.message).to.include('deleted');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "{{api_key}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/guestbooks/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"guestbooks",
+						"1"
+					]
+				},
+				"description": "Delete a guestbook entry by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Error - Missing API Key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"pm.test(\"Error message for missing API key\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(false);",
+							"    pm.expect(jsonData.message).to.include('API key');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/guestbooks",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"guestbooks"
+					]
+				},
+				"description": "Test request without API key - should return 401 error"
+			},
+			"response": []
+		},
+		{
+			"name": "Error - Invalid API Key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"pm.test(\"Error message for invalid API key\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(false);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "invalid-api-key",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/guestbooks",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"guestbooks"
+					]
+				},
+				"description": "Test request with invalid API key - should return 401 error"
+			},
+			"response": []
+		},
+		{
+			"name": "Error - Guestbook Not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Error message for not found\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(false);",
+							"    pm.expect(jsonData.message).to.include('not found');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "{{api_key}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/guestbooks/99999",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"guestbooks",
+						"99999"
+					]
+				},
+				"description": "Test request for non-existent guestbook - should return 404 error"
+			},
+			"response": []
+		},
+		{
+			"name": "Error - Validation Failed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});",
+							"",
+							"pm.test(\"Validation errors present\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('errors');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "{{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"invalid-email\",\n    \"phone\": \"081234567890\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/guestbooks",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"guestbooks"
+					]
+				},
+				"description": "Test request with invalid data - should return 422 validation error"
+			},
+			"response": []
+		}
+	]
+}
