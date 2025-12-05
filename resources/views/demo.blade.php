@@ -17,7 +17,7 @@
                 <p class="text-muted">Testing API endpoints dengan jQuery Client</p>
 
                 <!-- API Configuration -->
-                <div class="mt-4 p-4 bg-primary bg-opacity-10 rounded">
+                <div class="mt-4 p-4 bg-primary bg-opacity-10 rounded d-none">
                     <h5 class="fw-semibold text-primary mb-3"><i class="bi bi-gear"></i> API Configuration</h5>
                     <div class="row g-3">
                         <div class="col-md-6">
