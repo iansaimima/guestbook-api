@@ -5,13 +5,13 @@
 Semua endpoint API memerlukan API Key yang dikirim melalui header request:
 
 ```
-X-API-KEY: your-secret-api-key-here
+X-API-KEY: ly1VskisCUDJyFeIIls9ndseQPDfVslk
 ```
 
 ## Base URL
 
 ```
-http://localhost:8000/api
+https://api.gb.gutsylab.com
 ```
 
 ## Endpoints
