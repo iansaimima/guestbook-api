@@ -210,14 +210,6 @@ https://api.gb.gutsylab.com
 }
 ```
 
-## Setup
-
-1. Copy `.env.example` ke `.env`
-2. Set `API_KEY` di file `.env`:
-   ```
-   API_KEY=your-secret-api-key-here
-   ```
-3. Ganti dengan API key yang aman
 
 ## Testing dengan Postman
 
